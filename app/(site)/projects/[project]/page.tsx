@@ -1,7 +1,6 @@
 import { getProject } from "@/sanity/sanity-utils";
-import { PortableText } from "@portabletext/react";
+import { PortableText, PortableTextComponents } from "@portabletext/react";
 import Image from "next/image";
-import React from "react";
 
 type Props = {
   params: {
@@ -16,18 +15,16 @@ type projectChildren = {
   _key: string;
 };
 
-type ReactChildren = { children: React.ReactNode };
-
-const components = {
+const components: PortableTextComponents = {
   block: {
     // Ex. 1: customizing common block types
-    blockquote: ({ children }: ReactChildren) => (
+    blockquote: ({ children }) => (
       <blockquote className="border-l-purple-500 mt-4">{children}</blockquote>
     ),
   },
   listItem: {
     // Ex. 1: customizing common list types
-    bullet: ({ children }: ReactChildren) => (
+    bullet: ({ children }) => (
       <li style={{ listStyleType: "disc", marginLeft: "15px" }}>{children}</li>
     ),
   },
