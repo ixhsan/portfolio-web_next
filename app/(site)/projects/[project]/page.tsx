@@ -18,36 +18,6 @@ type projectChildren = {
 
 type ReactChildren = { children: React.ReactNode };
 
-function replaceBulletPoints(input) {
-  // Split the input string by "\tb"
-  const parts = input.split("\\tb");
-
-  // Initialize an empty string to store the result
-  let result = "";
-
-  // Loop through each part and concatenate with the appropriate indentation and bullet point
-  parts.forEach((part, index) => {
-    // If the index is greater than 0, add a newline character
-    if (index > 0) {
-      result += "\n";
-    }
-
-    // Add indentation based on the number of "\t" characters in the part
-    const indentation = part.split("\t").length - 1;
-
-    // Add bullet point(s) with the appropriate indentation
-    if (indentation > 0) {
-      result += "\t".repeat(indentation);
-    }
-    result += "• ";
-
-    // Add the remaining part (excluding the "\t" characters)
-    result += part.trim();
-  });
-
-  return result;
-}
-
 const components = {
   block: {
     // Ex. 1: customizing common block types
