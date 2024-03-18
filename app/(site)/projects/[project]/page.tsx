@@ -1,6 +1,7 @@
 import { getProject } from "@/sanity/sanity-utils";
 import { PortableText } from "@portabletext/react";
 import Image from "next/image";
+import React from "react";
 
 type Props = {
   params: {
@@ -8,9 +9,64 @@ type Props = {
   };
 };
 
+type projectChildren = {
+  _type: string;
+  marks: string[];
+  text: string;
+  _key: string;
+};
+
+type ReactChildren = { children: React.ReactNode };
+
+function replaceBulletPoints(input) {
+  // Split the input string by "\tb"
+  const parts = input.split("\\tb");
+
+  // Initialize an empty string to store the result
+  let result = "";
+
+  // Loop through each part and concatenate with the appropriate indentation and bullet point
+  parts.forEach((part, index) => {
+    // If the index is greater than 0, add a newline character
+    if (index > 0) {
+      result += "\n";
+    }
+
+    // Add indentation based on the number of "\t" characters in the part
+    const indentation = part.split("\t").length - 1;
+
+    // Add bullet point(s) with the appropriate indentation
+    if (indentation > 0) {
+      result += "\t".repeat(indentation);
+    }
+    result += "• ";
+
+    // Add the remaining part (excluding the "\t" characters)
+    result += part.trim();
+  });
+
+  return result;
+}
+
+const components = {
+  block: {
+    // Ex. 1: customizing common block types
+    blockquote: ({ children }: ReactChildren) => (
+      <blockquote className="border-l-purple-500 mt-4">{children}</blockquote>
+    ),
+  },
+  listItem: {
+    // Ex. 1: customizing common list types
+    bullet: ({ children }: ReactChildren) => (
+      <li style={{ listStyleType: "disc", marginLeft: "15px" }}>{children}</li>
+    ),
+  },
+};
+
 export default async function Project({ params }: Props) {
   const slug = params.project;
   const project = await getProject(slug);
+
   return (
     <div>
       <header className="flex items-center justify-between">
@@ -23,7 +79,8 @@ export default async function Project({ params }: Props) {
           title="View Project"
           target="_blank"
           rel="noopener noreferrer"
-          className="bg-grey-100 rounded-lg text-gray-500 font-bold py-3 px-4 whitespace-nowrap hover:bg-blue-500 hover:text-blue-100 transition"
+          className="bg-grey-100 rounded-lg text-gray-500 font-bold py-3 px-4 whitespace-nowrap border-blue-500 hover:bg-blue-500 hover:text-blue-100 transition"
+          style={{ border: "1px solid rgb(59,130, 246, 0.5)" }}
         >
           View Project
         </a>
@@ -34,7 +91,7 @@ export default async function Project({ params }: Props) {
        */}
 
       <div className="text-lg text-gray-700 mt-5">
-        <PortableText value={project.content} />
+        <PortableText value={project.content} components={components} />
       </div>
 
       {/**

@@ -24,7 +24,7 @@ export default async function RootLayout({
             href="/"
             className="bg-gradient-to-r from-yellow-400 via-green-500 to-blue-600 bg-clip-text text-transparent text-lg font-bold"
           >
-            Ikhsan
+            Home
           </Link>
 
           <div className="flex items-center gap-5 text-sm text-gray-600">
